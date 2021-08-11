@@ -2,7 +2,7 @@
 ### Keys for AWS
 - Head over to your .ssh folder and create .pub and .pem keys
 - `ssh-keygen -t rsa -b 2048 -v -f eng89_salem_ans`
-- `mv eng89_salem_ans eng89_ans.pem`
+- `mv eng89_salem_ans eng89_salem_ans.pem` to add the .pem extension
 - `chmod 400 eng89_salem_ans.pem`
 - `chmod 600 eng89_salem_ans.pub`
 ### Creating EC2 Instances
