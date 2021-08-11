@@ -1,0 +1,55 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: True
+  become: True
+  vars:
+    key_name: eng89_salem_ans
+    region: eu-west-1
+    image: ami-06e79b9a370267ca3
+    id: "eng89_salem3"
+    sec_group: "sg-0821110dce36f647a"
+    subnet_id: "subnet-0207b2be8c67a3e5c"
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+
+    - name: facts
+      block:
+
+      - name: get instance gather_facts
+        ec2_instance_facts:
+          aws_access_key: "{{aws_access_key}}"
+          aws_secret_key: "{{aws_secret_key}}"
+          region: "{{region}}"
+        register: result
+
+    - name: provisioning ec2 instances
+      block:
+
+      - name: upload public key to aws_access_key
+        ec2_key:
+          name: "{{key_name}}"
+          key_material: "{{ lookup('file', '~/.ssh/eng89/{{ key_name }}.pub') }}"
+          region: "{{region}}"
+          aws_access_key: "{{aws_access_key}}"
+          aws_secret_key: "{{aws_secret_key}}"
+
+      - name: provision instance
+        ec2:
+          aws_access_key: "{{aws_access_key}}"
+          aws_secret_key: "{{aws_secret_key}}"
+          assign_public_ip: True
+          key_name: "{{key_name}}"
+          id: "{{id}}"
+          vpc_subnet_id: "{{subnet_id}}"
+          group_id: "{{sec_group}}"
+          image: "{{image}}"
+          instance_type: t2.micro
+          region: "{{region}}"
+          wait: True
+          count: 1
+          instance_tags:
+            Name: eng89_salem_playbook_app3
+
+      tags: ['never', 'create_ec2']
