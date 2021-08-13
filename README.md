@@ -1,4 +1,8 @@
 ## Ansible AWS Playbooks
+### Install Prerequisites
+`sudo apt-get install python3-pip`
+`sudo pip3 install boto boto3`
+`sudo pip3 install boto botocore`
 ### Keys for AWS
 - Head over to your .ssh folder and create .pub and .pem keys
 - `ssh-keygen -t rsa -b 2048 -v -f eng89_salem_ans`
